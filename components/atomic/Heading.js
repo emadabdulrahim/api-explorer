@@ -51,6 +51,20 @@ const H4 = props => (
       fontSize: 400,
       color: 'text.heading',
       fontWeight: 'medium',
+      letterSpacing: 'initial',
+      lineHeight: 'heading',
+    }}
+    {...props}
+  ></Heading>
+)
+
+const H5 = props => (
+  <Heading
+    as="h3"
+    sx={{
+      fontSize: 300,
+      color: 'text.body',
+      fontWeight: 'medium',
       letterSpacing: 'heading',
       lineHeight: 'heading',
     }}
@@ -72,4 +86,4 @@ const H6 = props => (
   ></Heading>
 )
 
-export { H1, H2, H3, H4, H6 }
+export { H1, H2, H3, H4, H5, H6 }

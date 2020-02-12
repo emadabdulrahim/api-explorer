@@ -16,8 +16,10 @@ const ApiSpecHeading = ({
 }) => {
   return (
     <div sx={{ marginBottom: 48 }}>
-      <H1>{title}</H1>
-      <Paragraph sx={{ maxWidth: '60ch' }}>{description}</Paragraph>
+      <H1 sx={{ marginBottom: '0.25em' }}>{title}</H1>
+      <Paragraph sx={{ maxWidth: '60ch', marginBottom: '1em' }}>
+        {description}
+      </Paragraph>
       <Styled.a href={`mailto:${contact.email}`}>
         Contact the developer
       </Styled.a>
@@ -34,7 +36,7 @@ const Index = () => {
 
   return (
     <div sx={{ paddingY: 11, bg: 'background.lightest' }}>
-      <Center sx={{ maxWidth: 1200 }}>
+      <Center sx={{ maxWidth: 800 }}>
         <ApiSpecHeading {...apiSpec.info} />
         <Grid gap={7}>
           {resources.map(r => {
@@ -44,7 +46,7 @@ const Index = () => {
                 name={r}
                 description={resourcesMetaInfo[r].description}
               >
-                <Grid gap={4}>
+                <Grid gap={5}>
                   {resourcesPaths[r].map(path => (
                     <ResourceEndPoint
                       path={path}

@@ -50,6 +50,10 @@ export default {
     },
     ...palette,
   },
+  borders: {
+    base: '1px solid #f1f1f8',
+    muted: '1px solid #light',
+  },
   radii: {
     small: '4px',
     big: '6px',

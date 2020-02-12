@@ -30,6 +30,7 @@ const Small = props => (
       fontWeight: 'medium',
       color: 'text.body',
       letterSpacing: 'initial',
+      color: 'text.muted',
     }}
     {...props}
   ></Styled.p>
