@@ -1,4 +1,5 @@
-export { H1, H2, H3, H6 } from './Heading'
+export { H1, H2, H3, H4, H6 } from './Heading'
 export { default as Center } from './Center'
 export { Leading, Paragraph, Small } from './Paragraph'
-export { Logo } from './Logo'
+export { Card } from './Card'
+export { Tag } from './Tag'

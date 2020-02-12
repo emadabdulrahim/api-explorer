@@ -4,7 +4,7 @@ import { groupPaths, arrayToObject } from '../lib/util.js'
 import apiSpec from '../temp.json'
 import { Resource, ResourceEndPoint } from '../components'
 /** @jsx jsx */
-import { jsx, Styled } from 'theme-ui'
+import { jsx, Styled, Grid } from 'theme-ui'
 
 const ApiSpecHeading = ({
   title,
@@ -15,7 +15,7 @@ const ApiSpecHeading = ({
   description,
 }) => {
   return (
-    <div>
+    <div sx={{ marginBottom: 48 }}>
       <H1>{title}</H1>
       <Paragraph sx={{ maxWidth: '60ch' }}>{description}</Paragraph>
       <Styled.a href={`mailto:${contact.email}`}>
@@ -33,10 +33,10 @@ const Index = () => {
   const resourcesMetaInfo = arrayToObject({ list: apiSpec.tags, key: 'name' })
 
   return (
-    <div sx={{ paddingY: 11 }}>
+    <div sx={{ paddingY: 11, bg: 'background.lightest' }}>
       <Center sx={{ maxWidth: 1200 }}>
         <ApiSpecHeading {...apiSpec.info} />
-        <div>
+        <Grid gap={7}>
           {resources.map(r => {
             return (
               <Resource
@@ -44,13 +44,18 @@ const Index = () => {
                 name={r}
                 description={resourcesMetaInfo[r].description}
               >
-                {resourcesPaths[r].map(path => (
-                  <ResourceEndPoint path={path} methods={apiSpec.paths[path]} />
-                ))}
+                <Grid gap={4}>
+                  {resourcesPaths[r].map(path => (
+                    <ResourceEndPoint
+                      path={path}
+                      methods={apiSpec.paths[path]}
+                    />
+                  ))}
+                </Grid>
               </Resource>
             )
           })}
-        </div>
+        </Grid>
       </Center>
     </div>
   )

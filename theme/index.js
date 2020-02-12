@@ -1,3 +1,5 @@
+import palette from './palette'
+
 export default {
   useBoxSizing: false,
   fonts: {
@@ -34,8 +36,6 @@ export default {
     body: '1.5',
   },
   colors: {
-    primary: { base: '#ff8b11', light: '#3898EC' },
-    error: '#e00c0c',
     text: {
       heading: 'hsl(225, 9%, 14%)',
       body: 'hsl(220, 7%, 24%)',
@@ -48,6 +48,7 @@ export default {
       lighter: '#f1f1f8',
       light: '#e1e1ea',
     },
+    ...palette,
   },
   radii: {
     small: '4px',
