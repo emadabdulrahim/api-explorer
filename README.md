@@ -14,12 +14,16 @@ then run the following commands
 
 Open a browser window on `localhost:3000`
 
-### What did I like about my implementation?
+### How long you spent on the assignment.
+
+~5–6 Hours.
+
+### What did you like about your implementation?
 
 I like how the code is organized as an initial POC. Components are well structured and is are composable.
 I like the design direction, the visual design as well as the simple UX. I like the use of custom hooks to abstract functionality.
 
-### What would I have differently if I were to do it again?
+### What would you have differently if you were to do it again?
 
 1. I'd use context to hold global state about the API, such as authentication, api key, base url, etc.
 2. I'd made it more data driven. Right now, there's a lot of hardcoded decisions.
