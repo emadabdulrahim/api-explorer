@@ -1,3 +1,4 @@
+export { SpecHeader } from './SpecHeader'
 export { Resource } from './Resource'
 export { ResourceEndPoint } from './ResourceEndPoint'
 export { ResourceSection } from './ResourceSection'
