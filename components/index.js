@@ -1,5 +1,6 @@
 export { Resource } from './Resource'
 export { ResourceEndPoint } from './ResourceEndPoint'
-export { ResourceBody } from './ResourceBody'
+export { ResourceSection } from './ResourceSection'
 export { ResourceMethod } from './ResourceMethod'
 export { ResourceParams } from './ResourceParams'
+export { ResourceResponses } from './ResourceResponses'

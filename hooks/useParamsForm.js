@@ -1,4 +1,7 @@
 import React from 'react'
+import Fetch from '../lib/fetch'
+
+const fetchInstance = Fetch.getInstance()
 
 const paramsFormReducer = (state, event) => {
   switch (event.type) {
@@ -6,20 +9,22 @@ const paramsFormReducer = (state, event) => {
       return {
         ...state,
         status: 'fetching',
+        error: '',
       }
 
     case 'Resolve':
       return {
         ...state,
         status: 'success',
-        data: event.data,
+        data: event.payload,
+        error: '',
       }
 
     case 'Reject':
       return {
         ...state,
         status: 'failure',
-        error: event.error,
+        error: event.payload,
       }
 
     case 'HandleInputChange':
@@ -40,26 +45,59 @@ const paramsFormReducer = (state, event) => {
   }
 }
 
-const useParamsForm = params => {
+const useParamsForm = ({ params, verb, path }) => {
   const initialForm = React.useMemo(() => initialFormState(params), [params])
 
   const [state, dispatch] = React.useReducer(paramsFormReducer, {
-    statue: 'idle',
+    status: 'idle',
     data: null,
     form: initialForm,
   })
 
   const handleInputChange = React.useCallback(
     ({ id, value }) => {
-      console.log('TCL: value', id, value)
       dispatch({ type: 'HandleInputChange', payload: { id, value } })
     },
     [dispatch]
   )
 
   const handleFormSubmit = React.useCallback(
-    (event, state) => {
-      event.preventDefault()
+    state => e => {
+      e.preventDefault()
+
+      const fields = Object.keys(state.form)
+      for (let id of fields) {
+        const field = state.form[id]
+        if (field.required && !field.value.trim()) {
+          dispatch({
+            type: 'Reject',
+            payload: `Empty field: ${id} field can't be blank.`,
+          })
+          return
+        }
+      }
+
+      async function fetchData() {
+        const correctPath = getPath({ path, form: state.form })
+        const formData = prepareFormData({ form: state.form })
+
+        dispatch({ type: 'Fetch' })
+
+        try {
+          const result = await fetchInstance.fetchData({
+            path: correctPath,
+            method: verb,
+            body: formData,
+          })
+
+          dispatch({ type: 'Resolve', payload: result })
+        } catch (err) {
+          console.error(err)
+          dispatch({ type: 'Reject' })
+        }
+      }
+
+      fetchData()
     },
     [dispatch]
   )
@@ -73,12 +111,36 @@ const useParamsForm = params => {
 
 export { useParamsForm }
 
+const getPath = ({ path, form }) => {
+  const [placeholder, fieldName] = path.match(/{(.*?)}/)
+
+  if (!placeholder) {
+    return path
+  }
+
+  return `${path.split(placeholder)[0]}${form[fieldName].value}`
+}
+
 const initialFormState = params => {
   let form = {}
 
   for (let p of params) {
-    form[p.name] = { value: '', required: p.required }
+    form[p.name] = { value: '', required: p.required, in: p.in }
   }
 
   return form
+}
+
+const prepareFormData = ({ form }) => {
+  const fields = Object.keys(form)
+  const formData = new FormData()
+
+  for (let fieldName of fields) {
+    const field = form[fieldName]
+    if (field.in === 'formData') {
+      formData.append(fieldName, field.value)
+    }
+  }
+
+  return formData
 }

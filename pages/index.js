@@ -5,25 +5,31 @@ import apiSpec from '../temp.json'
 import { Resource, ResourceEndPoint } from '../components'
 /** @jsx jsx */
 import { jsx, Styled, Grid } from 'theme-ui'
+import Fetch from '../lib/fetch'
 
-const ApiSpecHeading = ({
-  title,
-  version,
-  contact,
-  termsOfService,
-  license,
-  description,
-}) => {
+// This should be set when the user passes a link to the API Spec or uploads the file.
+// Rethinking this: I'd just create a context that holds some global state, that would include:
+// 1. https vs http
+// 2. api key, auth, other options
+// 3. base url
+
+Fetch.getInstance().baseURL = `https://${apiSpec.host}${apiSpec.basePath}`
+
+const ApiSpecHeading = ({ title, contact, termsOfService, description }) => {
   return (
     <div sx={{ marginBottom: 48 }}>
       <H1 sx={{ marginBottom: '0.25em' }}>{title}</H1>
-      <Paragraph sx={{ maxWidth: '60ch', marginBottom: '1em' }}>
+      <Paragraph
+        sx={{ maxWidth: '60ch', marginBottom: '1em', color: 'text.muted' }}
+      >
         {description}
       </Paragraph>
-      <Styled.a href={`mailto:${contact.email}`}>
-        Contact the developer
-      </Styled.a>
-      <Styled.a href={termsOfService}>Terms of Service</Styled.a>
+      <Grid gap={3}>
+        <Styled.a href={`mailto:${contact.email}`}>
+          Contact the developer
+        </Styled.a>
+        <Styled.a href={termsOfService}>Terms of Service</Styled.a>
+      </Grid>
     </div>
   )
 }

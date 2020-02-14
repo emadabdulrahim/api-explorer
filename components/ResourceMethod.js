@@ -1,8 +1,13 @@
 /** @jsx jsx */
 import { jsx, Grid } from 'theme-ui'
 import { H2, Paragraph, H4, Card, Tag } from '../components/atomic'
-import { ResourceBody } from '../components'
 import { getColorForVerb } from '../lib/util'
+import {
+  ResourceParams,
+  ResourceResponses,
+  ResourceSection,
+} from '../components'
+import { useParamsForm } from '../hooks/useParamsForm'
 
 const ResourceHeader = ({
   verb,
@@ -15,17 +20,9 @@ const ResourceHeader = ({
     columns="80px 1fr 1.5fr"
     gap={5}
     sx={{
-      alignItems: 'center',
-      borderBottom: isExpanded ? 'base' : 'none',
-      paddingX: 6,
-      paddingY: 5,
-      position: 'sticky',
-      top: 0,
-      background: '#fff',
+      ...resourceHeaderStyles,
       borderRadius: isExpanded ? '6px 6px 0 0' : 'big',
-      ':hover': {
-        backgroundColor: 'background.lightest',
-      },
+      borderBottom: isExpanded ? 'base' : 'none',
     }}
     onClick={() => toggleExpanded(v => !v)}
   >
@@ -37,6 +34,11 @@ const ResourceHeader = ({
 
 const ResourceMethod = ({ path, method, verb }) => {
   const [isExpanded, toggleExpanded] = React.useState(false)
+  const { state, handleInputChange, handleFormSubmit } = useParamsForm({
+    params: method.parameters,
+    verb,
+    path,
+  })
 
   return (
     <div tabIndex={0}>
@@ -48,10 +50,40 @@ const ResourceMethod = ({ path, method, verb }) => {
           isExpanded={isExpanded}
           toggleExpanded={toggleExpanded}
         ></ResourceHeader>
-        {isExpanded && <ResourceBody content={method} />}
+        {isExpanded && (
+          <React.Fragment>
+            <ResourceSection title="parameters">
+              <ResourceParams
+                params={method.parameters}
+                state={state}
+                handleInputChange={handleInputChange}
+                handleFormSubmit={handleFormSubmit}
+              />
+            </ResourceSection>
+            <ResourceSection title="responses">
+              <ResourceResponses
+                responses={method.responses}
+                data={state.data}
+              />
+            </ResourceSection>
+          </React.Fragment>
+        )}
       </Card>
     </div>
   )
 }
 
 export { ResourceMethod }
+
+const resourceHeaderStyles = {
+  alignItems: 'center',
+  paddingX: 6,
+  paddingY: 5,
+  position: 'sticky',
+  top: 0,
+  cursor: 'pointer',
+  background: '#fff',
+  ':hover': {
+    backgroundColor: 'background.lightest',
+  },
+}

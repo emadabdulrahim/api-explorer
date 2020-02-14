@@ -76,7 +76,7 @@ const H6 = props => (
   <Heading
     as="h6"
     sx={{
-      fontSize: 100,
+      fontSize: 200,
       letterSpacing: 'caps',
       textTransform: 'uppercase',
       fontWeight: 'medium',

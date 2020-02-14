@@ -9,8 +9,6 @@ const Card = props => (
       borderRadius: 'big',
       backgroundColor: '#fff',
       transition: 'box-shadow, background 200ms ease-in-out',
-      cursor: 'pointer',
-      // overflow: 'hidden',
       boxShadow: '0 0 1px  hsla(225, 9%, 14%, 0.67)',
       ':hover, :focus': {
         boxShadow:

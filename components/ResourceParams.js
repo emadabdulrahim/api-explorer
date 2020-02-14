@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, Grid } from 'theme-ui'
-import { H6, H4, H5, Paragraph, Small, Input } from '../components/atomic'
+import { H4, Small, InputField, Button } from '../components/atomic'
 import { useParamsForm } from '../hooks/useParamsForm'
 
 const Parameter = ({ name, type, isRequired }) => (
@@ -12,38 +12,45 @@ const Parameter = ({ name, type, isRequired }) => (
   </Grid>
 )
 
-const ResourceParams = React.memo(({ params }) => {
-  const { state, handleInputChange, handleFormSubmit } = useParamsForm(params)
-  console.log('TCL: ResourceParams -> state', state)
+const ResourceParams = React.memo(
+  ({ params, state, handleInputChange, handleFormSubmit }) => {
+    console.log('TCL: ResourceParams -> state', state)
 
-  return (
-    <Grid
-      as="form"
-      onSubmit={() => {}}
-      columns="max-content 1fr"
-      gap={7}
-      sx={{ padding: 6, alignItems: 'start' }}
-    >
-      {params.map(p => (
-        <React.Fragment key={p.name}>
-          <Parameter
-            name={p.name}
-            isRequired={p.required}
-            type={p.type}
-          ></Parameter>
-          <Grid>
-            <Input
+    return (
+      <Grid
+        as="form"
+        onSubmit={handleFormSubmit(state)}
+        columns="max-content 1fr"
+        gap={7}
+        sx={{ padding: 6, alignItems: 'start', maxWidth: 450 }}
+      >
+        {params.map(p => (
+          <React.Fragment key={p.name}>
+            <Parameter
               name={p.name}
+              isRequired={p.required}
               type={p.type}
-              handleInputChange={handleInputChange}
-              value={state.form[p.name].value}
-            ></Input>
-            <Small>{p.description}</Small>
-          </Grid>
-        </React.Fragment>
-      ))}
-    </Grid>
-  )
-})
+            ></Parameter>
+            <Grid>
+              <InputField
+                name={p.name}
+                type={p.type}
+                handleInputChange={handleInputChange}
+                value={state.form[p.name].value}
+              ></InputField>
+              <Small>{p.description}</Small>
+            </Grid>
+          </React.Fragment>
+        ))}
+        <Grid sx={{ gridColumn: '1 / 3' }} gap={3}>
+          {state.error && (
+            <Small sx={{ color: 'red.base' }}>{state.error}</Small>
+          )}
+          <Button type="submit">Execute</Button>
+        </Grid>
+      </Grid>
+    )
+  }
+)
 
 export { ResourceParams }

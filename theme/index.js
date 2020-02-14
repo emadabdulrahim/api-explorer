@@ -52,7 +52,7 @@ export default {
   },
   borders: {
     base: '1px solid #f1f1f8',
-    muted: '1px solid #light',
+    muted: '1px solid #e1e1ea',
   },
   radii: {
     small: '4px',
@@ -115,12 +115,26 @@ export default {
       marginTop: 4,
       '* + *': {},
     },
+    a: {
+      color: 'blue.base',
+      textDecoration: 'none',
+      ':hover': {
+        textDecoration: 'underline',
+      },
+    },
     em: {
       fontFamily: 'bodyItalic',
     },
     hr: {
       border: '1px solid #f1f1f8',
       marginY: 9,
+    },
+    pre: {
+      fontFamily: 'mono',
+      margin: 0,
+      padding: 0,
+      width: '100%',
+      lineHeight: '1.6',
     },
     blockquote: {
       padding: '2em',
